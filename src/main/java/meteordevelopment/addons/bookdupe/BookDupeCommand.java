@@ -2,7 +2,6 @@ package meteordevelopment.addons.bookdupe;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import minegame159.meteorclient.systems.commands.Command;
-import minegame159.meteorclient.utils.player.ChatUtils;
 import minegame159.meteorclient.utils.player.InvUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.ItemStack;
@@ -30,8 +29,6 @@ public class BookDupeCommand extends Command {
 
         String str1 = stringBuilder.toString();
 
-
-
         ListTag listTag = new ListTag();
         listTag.addTag(0, StringTag.of(str1));
 
@@ -39,14 +36,14 @@ public class BookDupeCommand extends Command {
             listTag.addTag(i, StringTag.of("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
         }
 
-        DUPE_BOOK.putSubTag("title", StringTag.of("a"));
+        DUPE_BOOK.putSubTag("title", StringTag.of("Dupe Book"));
         DUPE_BOOK.putSubTag("pages", listTag);
     }
 
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            if (InvUtils.getHand(Items.WRITABLE_BOOK) != Hand.MAIN_HAND) error("BOOK DUPE", "No book found, you must be holding a writable book!");
+            if (InvUtils.getHand(Items.WRITABLE_BOOK) != Hand.MAIN_HAND) error("No book found, you must be holding a writable book!");
             else mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(DUPE_BOOK, true, mc.player.inventory.selectedSlot));
 
             return SINGLE_SUCCESS;
