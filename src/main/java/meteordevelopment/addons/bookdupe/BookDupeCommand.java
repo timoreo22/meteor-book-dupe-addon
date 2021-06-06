@@ -9,7 +9,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
-import net.minecraft.util.Hand;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
@@ -43,7 +42,7 @@ public class BookDupeCommand extends Command {
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            if (InvUtils.getHand(Items.WRITABLE_BOOK) != Hand.MAIN_HAND) error("No book found, you must be holding a writable book!");
+            if (!InvUtils.findInHotbar(Items.WRITABLE_BOOK).isMainHand()) error("No book found, you must be holding a writable book!");
             else mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(DUPE_BOOK, true, mc.player.inventory.selectedSlot));
 
             return SINGLE_SUCCESS;
