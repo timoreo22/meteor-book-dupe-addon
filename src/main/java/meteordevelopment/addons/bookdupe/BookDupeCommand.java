@@ -1,13 +1,13 @@
 package meteordevelopment.addons.bookdupe;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import minegame159.meteorclient.systems.commands.Command;
-import minegame159.meteorclient.utils.player.InvUtils;
+import meteordevelopment.meteorclient.systems.commands.Command;
+import meteordevelopment.meteorclient.utils.player.InvUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
@@ -28,14 +28,14 @@ public class BookDupeCommand extends Command {
 
         String str1 = stringBuilder.toString();
 
-        ListTag listTag = new ListTag();
-        listTag.addTag(0, StringTag.of(str1));
+        NbtList listTag = new NbtList();
+        listTag.add(0, NbtString.of(str1));
 
         for(int i = 1; i < 40; i++){
-            listTag.addTag(i, StringTag.of("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+            listTag.add(i, NbtString.of("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
         }
 
-        DUPE_BOOK.putSubTag("title", StringTag.of("Dupe Book"));
+        DUPE_BOOK.putSubTag("title", NbtString.of("Dupe Book"));
         DUPE_BOOK.putSubTag("pages", listTag);
     }
 
@@ -43,7 +43,7 @@ public class BookDupeCommand extends Command {
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
             if (!InvUtils.findInHotbar(Items.WRITABLE_BOOK).isMainHand()) error("No book found, you must be holding a writable book!");
-            else mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(DUPE_BOOK, true, mc.player.inventory.selectedSlot));
+            else mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(DUPE_BOOK, true, mc.player.getInventory().selectedSlot));
 
             return SINGLE_SUCCESS;
         });

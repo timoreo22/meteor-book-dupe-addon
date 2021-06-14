@@ -8,9 +8,7 @@
     "seasnail8169"
   ],
   "contact": {
-    "issues": "https://github.com/MeteorDevelopment/meteor-book-dupe-addon/issues",
-    "sources": "https://github.com/MeteorDevelopment/meteor-book-dupe-addon/",
-    "discord": "https://meteorclient.com/discord"
+    "repo": "https://github.com/MeteorDevelopment/meteor-book-dupe-addon"
   },
   "icon": "assets/bookdupe/icon.png",
   "environment": "client",
@@ -20,8 +18,8 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.7.4",
-    "minecraft": "1.16.x",
-    "meteor-client": "*"
+    "java": "16",
+    "minecraft": "<=1.17",
+    "meteor-client": "<=0.4.4"
   }
 }
