@@ -9,7 +9,7 @@ jobs:
         os:
           - macos-latest
           - windows-latest
-          - linux-latest
+          - ubuntu-latest
     runs-on: '${{ matrix.os }}'
     steps:
       - name: Checkout
