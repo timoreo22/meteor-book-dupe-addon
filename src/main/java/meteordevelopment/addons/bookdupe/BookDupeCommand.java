@@ -20,20 +20,13 @@ public class BookDupeCommand extends Command {
     public BookDupeCommand() {
         super("dupe", "Dupes using a held, writable book.");
 
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for(int i = 0; i < 21845; i++){
-            stringBuilder.append((char) 2048);
-        }
-
-        String str1 = stringBuilder.toString();
-
         NbtList listTag = new NbtList();
+
+        String str1 = String.valueOf((char) 2048).repeat(21845);
         listTag.add(0, NbtString.of(str1));
 
-        for(int i = 1; i < 40; i++){
-            listTag.add(i, NbtString.of("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-        }
+        String str2 = "a".repeat(256);
+        for (int i = 1; i < 40; i++) listTag.add(i, NbtString.of(str2));
 
         DUPE_BOOK.putSubTag("title", NbtString.of("Dupe Book"));
         DUPE_BOOK.putSubTag("pages", listTag);
@@ -42,8 +35,17 @@ public class BookDupeCommand extends Command {
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.executes(context -> {
-            if (!InvUtils.findInHotbar(Items.WRITABLE_BOOK).isMainHand()) error("No book found, you must be holding a writable book!");
-            else mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(DUPE_BOOK, true, mc.player.getInventory().selectedSlot));
+            if (!InvUtils.findInHotbar(Items.WRITABLE_BOOK).isMainHand()) {
+                error("No book found, you must be holding a writable book!");
+            }
+            else {
+                mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(
+                    DUPE_BOOK,
+                    true,
+                    mc.player.getInventory().selectedSlot
+                    )
+                );
+            }
 
             return SINGLE_SUCCESS;
         });

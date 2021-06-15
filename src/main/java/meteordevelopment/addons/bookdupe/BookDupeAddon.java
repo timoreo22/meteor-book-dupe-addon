@@ -8,6 +8,7 @@ public class BookDupeAddon extends MeteorAddon {
 	@Override
 	public void onInitialize() {
 		MeteorClient.LOG.info("Initializing Book Dupe Addon");
+
 		Commands.get().add(new BookDupeCommand());
 	}
 }
